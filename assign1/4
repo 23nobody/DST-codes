@@ -1,0 +1,123 @@
+#include<stdio.h>
+#include<malloc.h>
+struct node {
+    int data;
+    struct node* next;
+};
+void insertbeginning(struct node **start, int a)
+{
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data =a;
+    p->next= *start;
+    *start= p;
+}
+void insertlast(struct node **head, int a)
+{
+    struct node* k= *head;
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data=a;
+    p->next=NULL;
+    while(k->next!=NULL)
+    {
+        k=k->next;
+ 
+    }
+    k->next=p;
+}
+void deleteelement(int a, struct node **head)
+{
+    struct node* lazy= NULL;
+    struct node* p=*head;
+    while(p!=NULL)
+    {
+        if((p->data==a)&&p== *head)
+        {
+ 
+            *head=p->next;
+            free(p);
+            break;
+        }
+        else if(p->data==a)
+        {
+            lazy->next=lazy->next->next;
+            free(p);
+            break;
+        }
+ 
+ 
+     lazy=p;
+     p=p->next;
+    }
+ 
+}
+ 
+void printlist(struct node* p)
+{
+    while(p!=NULL)
+    {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+}
+void deleteafter(struct node *p)
+{   struct node* temp;
+temp=p->next;
+ 
+    p->next=p->next->next;
+    free(temp);
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        int n,i; 
+        scanf("%d", &n);
+        struct node* head=NULL;
+        struct node* head2=NULL;
+        int a;
+        scanf("%d", &a);
+        insertbeginning(&head, a);
+        for(i=1;i<n;i++)
+        {
+            scanf("%d", &a);
+            insertlast(&head, a);
+        }
+        for(i=0;i<n;i++)
+        {
+            struct node* k= head;
+            int max=0;
+            while(k!=NULL)
+            {
+                if((k->data)>max)
+                {
+                    max=k->data;
+                }
+                k=k->next;
+            }
+            k=head;
+            while(k!=NULL)
+            {
+                if(k->data==max)
+                {
+                    deleteelement(max, &head);
+                    if(head2==NULL)
+                    {
+                        insertbeginning(&head2, max);
+                        
+                    }
+                    else
+                    {
+                        insertlast(&head2, max);
+                    }
+                }
+                k=k->next;
+            }
+            
+        }
+        printlist(head2);
+        printf("\n");
+    }
+    return 0;
+}

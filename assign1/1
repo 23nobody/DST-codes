@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<malloc.h>
+struct node {
+    int data;
+    struct node* next;
+};
+void insertbeginning(struct node **start, int a)
+{
+    struct node* p;
+    p=(struct node*)malloc(sizeof(struct node));
+    p->data= a;
+    p->next= *start;
+    *start= p;
+}
+void insertlast(struct node **head, int a)
+{
+    struct node* k= *head;
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p-> data=a;
+    p->next=NULL;
+    
+    while(k->next!=NULL)
+    {
+        k= k->next;
+    }
+    k->next=p;
+ 
+}
+void printlist(struct node* p)
+{
+    while(p!=NULL)
+    {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+}
+void printsum(struct node* p)
+{
+    int sum=0;
+    while(p!=NULL)
+    {
+        sum=sum+p->data;
+        p=p->next;
+    }
+    printf("%d\n", sum);
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        struct node* head=NULL;
+        int i,n;
+        scanf("%d", &n);
+        int a;
+        scanf("%d", &a);
+        insertbeginning(&head, a);
+        struct node* temp;
+        temp=head;
+        for(i=1;i<n;i++)
+        {
+            scanf("%d", &a);
+            insertlast(&head, a);
+        }
+        printlist(head);
+        
+        printsum(head);
+    }
+    return 0;
+}

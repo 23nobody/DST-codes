@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<malloc.h>
+struct node {
+    int data;
+    struct node* next;
+};
+void insertbeginning(struct node **start, int a)
+{
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data =a;
+    p->next= *start;
+    *start= p;
+}
+void insertlast(struct node **head, int a)
+{
+    struct node* k= *head;
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data=a;
+    p->next=NULL;
+    while(k->next!=NULL)
+    {
+        k=k->next;
+ 
+    }
+    k->next=p;
+}
+void printlist(struct node* p)
+{
+    while(p!=NULL)
+    {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        int i,n;int x=0;
+        scanf("%d", &n);
+        int a=0;int b=0;int c=0;
+        struct node* secA=NULL;
+        struct node* secB=NULL;
+        struct node* secC=NULL;
+        
+            
+            scanf("%d", &x);
+            insertbeginning(&secA, x);
+            a=x;
+            scanf("%d", &x);
+            insertbeginning(&secB, x);
+            b=x;
+            scanf("%d", &x);
+            insertbeginning(&secC, x);
+            c=x;
+        
+        for(i=0;i<(n-3);i++)
+        {
+            scanf("%d", &x);
+            if((a<=b)&&(a<=c))
+            {
+                insertlast(&secA, x);
+                a=a+x;
+            }
+            else if((b<a)&&(b<=c))
+            {
+                insertlast(&secB, x);
+                b=b+x;
+            }
+            else if((c<a)&&(c<b))
+            {
+                insertlast(&secC, x);
+                c=c+x;
+            }
+        }
+        printlist(secA);
+        printf("\n");
+        printlist(secB);
+        printf("\n");
+        printlist(secC);
+        printf("\n");
+        
+    }
+    return 0;
+}

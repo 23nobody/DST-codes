@@ -1,0 +1,121 @@
+#include<stdio.h>
+#include<string.h>
+#include<malloc.h>
+struct evaluation{
+        int data;
+        struct evaluation* next;
+    };
+ 
+struct node{
+    char roll[12];
+    char name[50];
+    struct evaluation* marks;
+    struct node* below;
+};
+void insertevaluation(struct evaluation **start, int a)
+{
+    struct evaluation* p=(struct evaluation*)malloc(sizeof(struct evaluation));
+    p->data=a;
+    p->next=NULL;
+    if(*start==NULL)
+    {
+        p->next=*start;
+        *start=p;
+    }
+    else
+    {
+        struct evaluation* k= *start;
+        while(k->next!=NULL)
+        {
+            k=k->next;
+        }
+        k->next=p;
+    }
+}
+ 
+    
+void insertbeginning(struct node **start, char rollno[12], char naam[50])
+{
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    strcpy(p->roll,rollno);
+    strcpy(p->name,naam);
+    p->marks=NULL;
+    p->below=*start;
+    *start=p;
+}
+void insertlast(struct node** head, char rollno[12], char naam[50])
+{
+    struct node* k= *head;
+    struct node* p= (struct node*)malloc(sizeof(struct node));
+    strcpy(p->roll,rollno);
+    strcpy(p->name,naam);
+    p->marks=NULL;
+    while(k->below!=NULL)
+    {
+        k=k->below;
+    }
+    k->below=p;
+}
+void printresult(struct node* k)
+{
+    while(k!=NULL)
+    {
+    printf("%s %s ", k->roll, k->name);
+    struct evaluation* p= k->marks;
+    int total=0;
+    while(p!=NULL)
+    {
+        printf("%d ", p->data );
+        total= total + p->data;
+        p=p->next;
+    }
+    printf("%d\n", total);
+    k=k->below;
+    }
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        int n,p;
+        scanf("%d%d", &n, &p);
+        char rollno[12];
+        char naam[50];
+        scanf("%s", rollno);
+        scanf("%s", naam);
+        struct node* head=NULL;
+        insertbeginning(&head, rollno, naam);
+        int i,j;
+        for(i=0;i<n-1;i++)
+        {
+            scanf("%s", rollno);
+        scanf("%s", naam);
+        insertlast(&head, rollno, naam);
+        }
+        
+        char find[12];
+        for(i=0;i<p;i++)
+        {
+            struct node* k=head;
+            scanf("%s", find);
+            int number;
+            
+            while(k!=NULL)
+            {
+                if(strcmp(find, k->roll)==0)
+                {
+                    scanf("%d", &number);
+                    insertevaluation(&k->marks,number);
+                    break;
+                }
+                k=k->below;
+            }
+        }
+        printresult(head);
+        
+        
+    }
+   return 0; 
+}

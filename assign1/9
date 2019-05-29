@@ -1,0 +1,203 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<malloc.h>
+#include<strings.h>
+struct node {
+    int data;
+    struct node* next;
+    struct node* below;
+};
+void insertbelow(struct node **start, int a)
+{
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data =a;
+    p->below= NULL;
+    p->next=NULL;
+    if(*start==NULL)
+    {
+        p->below=*start;
+        *start= p;
+    }
+    else
+    {
+        struct node* k= *start;
+        while(k->below!=NULL)
+            {
+            k=k->below;
+ 
+            }
+    k->below=p;
+ 
+    }
+ 
+}
+void insertelement(struct node **start, int a)
+{
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data=a;
+    p->next=NULL;
+    p->below=NULL;
+    struct node* k= *start;
+    while(k->below!=NULL)
+    {
+        k=k->below;
+    }
+    while(k->next!=NULL)
+    {
+        k=k->next;
+    }
+    k->next=p;
+}
+void deleteelement(int a, struct node **head)
+{
+    struct node* p= *head;
+    struct node* lazy1=NULL;
+    struct node* lazy2=NULL;
+    struct node* k;
+    struct node* x=NULL;
+    int flag=0;
+    while(p!=NULL)
+    {
+        if(flag==1)
+           { break;}
+        k=p;
+ 
+        while(k!=NULL)
+        {
+            
+            if(k->data==a)
+            {
+ 
+                if(k==*head)
+                {
+                    
+                    if(k->next!=NULL)
+                    {
+ 
+ 
+                    x=k->next;
+                    x->below=k->below;
+                    *head=k->next;
+ 
+                    }
+                    else
+                     *head=k->below;
+                    free(k);
+                    flag=1;
+                    break;
+                }
+                else if(lazy1==NULL)
+ 
+                    {
+                    
+                    x=lazy2->next;
+                    lazy2->next=x->next;
+                    free(k);
+                    flag=1;
+                    break;
+ 
+                }
+ 
+ 
+                else if(k==lazy1->below)
+                {
+                    
+                    if(k->next!=NULL)
+                    {
+ 
+ 
+                    x=k->next;
+                    lazy1->below=x;
+                    if(x!=NULL)
+                    x->below=k->below;
+                    }
+ 
+                    else{
+                        x=k->below;
+                        lazy1->below=x;
+                    }
+                    free(k);
+                    flag=1;
+                    break;
+                }
+                else
+                {
+                    
+                    x=lazy2->next;
+                    lazy2->next=x->next;
+                    free(k);
+                    flag=1;
+                    break;
+ 
+                }
+ 
+ 
+            }
+            lazy2=k;
+            k=k->next;
+        }
+        lazy1=p;
+        p=p->below;
+    }
+}
+ 
+void printlist(struct node* p)
+{
+    struct node* k=p;
+    struct node* l;
+    while(k!=NULL)
+    {
+        l=k;
+    while(l!=NULL)
+    {
+ 
+        printf("%d ", l->data);
+        l=l->next;
+    }
+    printf("\n");
+    k=k->below;
+    }
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        char add[]="add";
+        char del[]="delete";
+        char pri[]="print";
+        char command[10];
+        int n;
+        scanf("%d", &n);
+        struct node* head=NULL;
+        for(;n>0;n--)
+        {
+            scanf("%s", command);
+            if(strcmp(command,add)==0)
+            {
+                int i,k,a;
+                scanf("%d", &k);
+                scanf("%d", &a);
+                insertbelow(&head,a);
+                for(i=0;i<k-1;i++)
+                {
+                    scanf("%d", &a);
+                    insertelement(&head,a);
+                }
+ 
+            }
+            else if(strcmp(command,del)==0)
+            {
+                int a;
+                scanf("%d", &a);
+             deleteelement(a,&head );
+            }
+            else if(strcmp(command,pri)==0)
+            {
+             printlist(head);
+            }
+        }
+    }
+    return 0;
+}

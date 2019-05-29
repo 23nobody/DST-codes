@@ -1,0 +1,113 @@
+#include<stdio.h>
+#include<malloc.h>
+struct node {
+    int data;
+    struct node* next;
+};
+void insertbeginning(struct node **start, int a)
+{
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data =a;
+    p->next= *start;
+    *start= p;
+}
+void insertlast(struct node **head, int a)
+{
+    struct node* k= *head;
+    struct node* p=(struct node*)malloc(sizeof(struct node));
+    p->data=a;
+    p->next=NULL;
+    while(k->next!=NULL)
+    {
+        k=k->next;
+ 
+    }
+    k->next=p;
+}
+void printlist(struct node* p)
+{
+    while(p!=NULL)
+    {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        int i,n,j;int x=0;
+        scanf("%d", &n);
+        int k;
+        scanf("%d", &k);
+        
+        struct node* sec[k];
+        //sec[i]-> data will be the sum for section, main list will start from sec[i]->next
+            if(n>=k)
+            {
+            for(i=0;i<k;i++)
+            {
+                
+                sec[i]=(struct node*)malloc(sizeof(struct node));
+                sec[i]->next=NULL;
+                scanf("%d", &x);
+                insertlast(&sec[i],x);
+            sec[i]->data=x;
+            }
+            
+            
+        
+        for(i=0;i<(n-k);i++)
+        {
+            scanf("%d", &x);
+            //compute minimum and enter here
+            int min=1000000;
+            for(j=0;j<k;j++)
+            {
+                if((sec[j]->data)<min)
+                {
+                    min=sec[j]->data;
+                }
+            }
+            for(j=0;j<k;j++)
+            {
+                if((sec[j]->data)==min)
+                {
+                    insertlast(&sec[j],x);
+                    (sec[j]->data)= (sec[j]->data) + x;
+                    break;
+                }
+            }
+            
+        }
+        
+        {
+        for(i=0;i<k;i++)
+        {
+        printlist(sec[i]->next);
+        printf("\n");
+        }
+        }
+            }
+            else
+            {
+                for(i=0;i<n;i++)
+            {
+                
+                sec[i]=(struct node*)malloc(sizeof(struct node));
+                sec[i]->next=NULL;
+                scanf("%d", &x);
+                insertlast(&sec[i],x);
+            sec[i]->data=x;
+            }
+            for(i=0;i<n;i++)
+        {
+        printlist(sec[i]->next);
+        printf("\n");
+        }
+            }
+    }
+    return 0;
+}

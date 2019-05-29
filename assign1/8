@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+#include<strings.h>
+struct room{
+    int prefixcount;
+    struct prefix* prefixes;
+    
+};
+struct prefix{
+    char str[12];
+    
+    struct prefix* next;
+};
+struct student{
+  char roll[12];
+  struct student* next;
+};
+void insertprefix(struct prefix **start, char pre[12])
+{
+    struct prefix* p=(struct prefix*)malloc(sizeof(struct prefix));
+    strcpy(p->str, pre);
+    
+    p->next=NULL;
+    if(*start==NULL)
+    {
+        p->next=*start;
+        *start=p;
+    }
+    else
+    {
+        struct prefix* k=*start;
+        while(k->next!=NULL)
+        {
+            k=k->next;
+        }
+        k->next=p;
+    }
+}
+void insertstudent(struct student **start, char str[12])
+{
+    struct student* p=(struct student*)malloc(sizeof(struct student));
+    strcpy(p->roll, str);
+    p->next=NULL;
+    if(*start==NULL)
+    {
+        p->next=*start;
+        *start=p;
+    }
+    else
+    {
+        struct student* k=*start;
+        while(k->next!=NULL)
+        {
+            k=k->next;
+        }
+        k->next=p;
+    }
+    
+}
+void printlist(struct student* p)
+{
+    while(p!=NULL)
+    {
+        printf("%s ", p->roll);
+        p=p->next;
+    }
+    printf("\n");
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for(;t>0;t--)
+    {
+        int n,k;
+        scanf("%d%d", &n,  &k);
+        int i,j;
+        struct room* room[k];
+        struct student* section[k];
+        for(i=0;i<k;i++)
+        {
+            section[i]=NULL;
+            room[i]=(struct room*)malloc(sizeof(struct room));
+            scanf("%d", &room[i]->prefixcount);
+            room[i]->prefixes=NULL;
+            
+            for(j=0;j<(room[i]->prefixcount);j++)
+            {
+                char pre[12];
+                scanf("%s", pre);
+                insertprefix(&room[i]->prefixes,pre);
+            }
+        }
+        for(i=0;i<n;i++)
+        {
+            int flag=0;
+            char student[12];
+            scanf("%s", student);
+            for(j=0;j<k;j++)
+            {
+                if(flag==1)
+                {
+                    break;
+                }
+                struct prefix* k=room[j]->prefixes;
+                while(k!=NULL)
+                {
+                    if(strncmp(k->str,student,7)==0)
+                    {
+                        insertstudent(&section[j] , student );
+                        flag=1;
+                        break;
+                    }
+                    k=k->next;
+                }
+            }
+        }
+        for(i=0;i<k;i++)
+        {
+            printlist(section[i]);
+        }
+        
+    }
+    return 0;
+}
